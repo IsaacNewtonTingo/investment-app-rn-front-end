@@ -9,13 +9,18 @@ import {
   TextInput,
   RefreshControl,
 } from 'react-native';
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import styles from '../components/globalStyles';
 import colors from '../components/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 
 import {BarIndicator} from 'react-native-indicators';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {CredentialsContext} from '../components/credentials-context';
+import {Button} from '../components/button';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -27,12 +32,15 @@ export default function Home({route, navigation}) {
   const [withdrawModal, setWithdrawModal] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
 
-  const [phoneNumber, setPhoneNumber] = useState('254724753175');
   const [amount, setAmount] = useState('');
-
-  const [accountBalance, setAccountBalance] = useState();
+  const [accountBalance, setAccountBalance] = useState('');
 
   const [refreshing, setRefreshing] = useState(false);
+
+  const {storedCredentials, setStoredCredentials} =
+    useContext(CredentialsContext);
+
+  const {firstName, lastName, phoneNumber, _id} = storedCredentials;
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -44,7 +52,7 @@ export default function Home({route, navigation}) {
     getUserData();
   }, [phoneNumber]);
 
-  //use socket io to get real time updates
+  // use socket io to get real time updates
 
   async function getUserData() {
     await axios
@@ -78,7 +86,7 @@ export default function Home({route, navigation}) {
           'https://investment-app-backend.herokuapp.com/payments/deposit-funds',
           {
             amount: parseInt(amount.replace(/,/g, '')),
-            phoneNumber: phoneNumber,
+            phoneNumber: parseInt(phoneNumber),
           },
         )
         .then(response => {
@@ -87,6 +95,7 @@ export default function Home({route, navigation}) {
           if (response.data.status == 'Success') {
             setShowModal(false);
             Alert.alert(response.data.message);
+            setAmount('');
           } else {
             setShowModal(false);
             Alert.alert(response.data.message);
@@ -110,8 +119,8 @@ export default function Home({route, navigation}) {
         .post(
           'https://investment-app-backend.herokuapp.com/payments/investment-payment',
           {
-            phoneNumber,
-            userID: '47843tht83tyt',
+            phoneNumber: parseInt(phoneNumber),
+            userID: _id,
             amountInvested: parseInt(amount.replace(/,/g, '')),
           },
         )
@@ -145,8 +154,8 @@ export default function Home({route, navigation}) {
         .post(
           'https://investment-app-backend.herokuapp.com/payments/withdraw-funds',
           {
-            phoneNumber,
-            userID: '47843tht83tyt',
+            phoneNumber: parseInt(phoneNumber),
+            userID: _id,
             amount: parseInt(amount.replace(/,/g, '')),
           },
         )
@@ -169,6 +178,16 @@ export default function Home({route, navigation}) {
     }
   }
 
+  const logout = async () => {
+    await AsyncStorage.removeItem('loginCredentials')
+      .then(() => {
+        setStoredCredentials('');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <ScrollView
       refreshControl={
@@ -176,10 +195,12 @@ export default function Home({route, navigation}) {
       }
       keyboardShouldPersistTaps="always"
       style={styles.container}>
-      {/* <View style={{marginBottom: 20}}>
+      <View style={{marginBottom: 20}}>
         <Text style={styles.heading}>Welcome,</Text>
-        <Text style={styles.heading}>Isaac Tingo</Text>
-      </View> */}
+        <Text style={styles.heading}>
+          {firstName} {lastName}
+        </Text>
+      </View>
       <LinearGradient colors={['blue', 'red']} style={styles.balanceContainer}>
         <Text
           style={{
@@ -236,16 +257,20 @@ export default function Home({route, navigation}) {
         </TouchableOpacity>
       </View>
 
+      <Button title="Logout" onPress={logout} />
+
       <Modal visible={showModal} onRequestClose={() => setShowModal(false)}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <Text style={styles.subHeading}>Deposit</Text>
             <TextInput
               style={styles.modalInput}
               placeholder="Enter phone number"
-              value={phoneNumber}
+              value={phoneNumber.toString()}
               placeholderTextColor="gray"
               onChangeText={text => setPhoneNumber(text)}
               keyboardType="phone-pad"
+              editable={false}
             />
 
             <TextInput
@@ -294,13 +319,15 @@ export default function Home({route, navigation}) {
         onRequestClose={() => setShowInvestModal(false)}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <Text style={styles.subHeading}>Invest</Text>
             <TextInput
               style={styles.modalInput}
               placeholder="Enter phone number"
-              value={phoneNumber}
+              value={phoneNumber.toString()}
               placeholderTextColor="gray"
               onChangeText={text => setPhoneNumber(text)}
               keyboardType="phone-pad"
+              editable={false}
             />
 
             <TextInput
@@ -349,13 +376,15 @@ export default function Home({route, navigation}) {
         onRequestClose={() => setWithdrawModal(false)}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <Text style={styles.subHeading}>Withdraw</Text>
             <TextInput
               style={styles.modalInput}
               placeholder="Enter phone number"
-              value={phoneNumber}
+              value={phoneNumber.toString()}
               placeholderTextColor="gray"
               onChangeText={text => setPhoneNumber(text)}
               keyboardType="phone-pad"
+              editable={false}
             />
 
             <TextInput

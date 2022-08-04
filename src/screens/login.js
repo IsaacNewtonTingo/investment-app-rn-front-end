@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 import styles from '../components/globalStyles';
 
@@ -18,7 +18,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Button, LoadingButton} from '../components/button';
 
 import axios from 'axios';
-import {ShortLine} from '../components/shortLine';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {CredentialsContext} from '../components/credentials-context';
 
 const A = props => <Text style={styles.textLink}>{props.children}</Text>;
 
@@ -27,6 +30,9 @@ export default function Login({navigation}) {
   const [password, setPassword] = useState('');
 
   const [isPosting, setIsPosting] = useState(false);
+
+  const {storedCredentials, setStoredCredentials} =
+    useContext(CredentialsContext);
 
   const empty = () => {
     setEmail('');
@@ -51,32 +57,37 @@ export default function Login({navigation}) {
         })
         .then(response => {
           empty();
-          if (response.data.status == 'Success') {
-            Alert.alert(response.data.message);
+          const result = response.data;
+          const {message, status, data} = result;
+          if (status == 'Success') {
+            Alert.alert(message);
             setIsPosting(false);
-            navigation.navigate(
-              'TabNavigator',
-              {screen: 'HomeStack'},
-              {
-                userID: response.data.data[0]._id,
-                phoneNumber: response.data.data[0].phoneNumber,
-              },
-            );
-          } else if (response.data.status == 'Pending') {
-            Alert.alert(response.data.message);
+            persistLogin({...data[0]}, message, status);
+          } else if (status == 'Pending') {
+            Alert.alert(message);
             setIsPosting(false);
             navigation.navigate('RegPayment', {
               userID: response.data.data[0]._id,
               phoneNumber: response.data.data[0].phoneNumber,
             });
           } else {
-            Alert.alert(response.data.message);
+            Alert.alert(message);
             setIsPosting(false);
           }
           setIsPosting(false);
         });
     }
   }
+
+  const persistLogin = async values => {
+    await AsyncStorage.setItem('loginCredentials', JSON.stringify(values))
+      .then(() => {
+        setStoredCredentials(values);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   return (
     <ScrollView
