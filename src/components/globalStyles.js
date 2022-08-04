@@ -43,9 +43,11 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   heading: {
-    fontFamily: 'SourceSansPro-Bold',
+    // fontFamily: 'SourceSansPro-Bold',
     color: 'gray',
-    fontSize: 30,
+    fontSize: 25,
+    fontWeight: '900',
+    marginLeft: 20,
   },
   textLink: {
     fontFamily: 'SourceSansPro-Bold',
@@ -78,13 +80,12 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   logoIMGContainer: {
-    height: 30,
-    width: 60,
+    height: 45,
+    width: 50,
   },
   balanceContainer: {
     height: 100,
     borderRadius: 20,
-    padding: 20,
     justifyContent: 'center',
     flex: 1,
   },
@@ -93,9 +94,6 @@ const styles = StyleSheet.create({
     width: '30%',
     backgroundColor: colors.lightPurple,
     borderRadius: 10,
-    alignItems: 'center',
-    padding: 10,
-    shadowColor: 'black',
     shadowOffset: {
       height: 5,
       width: 5,
@@ -115,6 +113,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 35,
     backgroundColor: 'white',
+    borderWidth: 2,
+    borderColor: colors.lighgray,
   },
   actionImage: {
     width: '100%',
@@ -167,6 +167,13 @@ const styles = StyleSheet.create({
     color: 'black',
     width: '80%',
     marginTop: 20,
+  },
+  miBG: {
+    alignItems: 'center',
+    shadowColor: 'black',
+    padding: 10,
+    flex: 1,
+    borderRadius: 10,
   },
 });
 

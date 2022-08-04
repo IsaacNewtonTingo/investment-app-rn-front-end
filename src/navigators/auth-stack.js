@@ -23,7 +23,9 @@ export default function AuthStack() {
       <View>
         <Image
           style={styles.logoIMG}
-          source={require('../assets/images/logo.png')}
+          source={{
+            uri: 'https://w7.pngwing.com/pngs/973/11/png-transparent-logo-phoenix-illustration-phoenix-logo-design-phoenix-illustration-free-logo-design-template-photography-orange-thumbnail.png',
+          }}
         />
       </View>
     );

@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
   RefreshControl,
+  ImageBackground,
 } from 'react-native';
 import React, {useState, useEffect, useCallback, useContext} from 'react';
 import styles from '../components/globalStyles';
@@ -195,69 +196,79 @@ export default function Home({route, navigation}) {
       }
       keyboardShouldPersistTaps="always"
       style={styles.container}>
-      <View style={{marginBottom: 20}}>
-        <Text style={styles.heading}>Welcome,</Text>
+      {/* <View style={{marginBottom: 20}}>
         <Text style={styles.heading}>
-          {firstName} {lastName}
+          Hello {firstName} {lastName},
         </Text>
-      </View>
+        <Text style={styles.heading}>Welcome back.</Text>
+      </View> */}
       <LinearGradient colors={['blue', 'red']} style={styles.balanceContainer}>
-        <Text
-          style={{
-            color: '#bfbfbf',
-            fontFamily: 'SourceSansPro-Bold',
-          }}>
-          Your balance
-        </Text>
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 30,
-            fontFamily: 'SourceSansPro-Bold',
-          }}>
-          KSH. {parseInt(accountBalance).toFixed(2)}
-        </Text>
+        <ImageBackground
+          style={{padding: 20}}
+          source={require('../assets/images/bg.png')}>
+          <Text
+            style={{
+              color: 'gray',
+              fontFamily: 'SourceSansPro-Bold',
+            }}>
+            Your balance
+          </Text>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 30,
+              fontFamily: 'SourceSansPro-Bold',
+            }}>
+            KSH. {parseInt(accountBalance).toFixed(2)}
+          </Text>
+        </ImageBackground>
       </LinearGradient>
 
       <View style={styles.majorActionContainer}>
         <TouchableOpacity
           onPress={() => setShowInvestModal(true)}
-          style={[styles.actionContainer, {backgroundColor: '#009933'}]}>
-          <View style={styles.actionImageContainer}>
-            <Image
-              style={styles.actionImage}
-              source={require('../assets/images/handCash.png')}
-            />
-          </View>
-          <Text style={styles.actionText}>Invest</Text>
+          style={styles.actionContainer}>
+          <LinearGradient style={styles.miBG} colors={['white', '#009933']}>
+            <View style={styles.actionImageContainer}>
+              <Image
+                style={styles.actionImage}
+                source={require('../assets/images/handCash.png')}
+              />
+            </View>
+            <Text style={styles.actionText}>Invest</Text>
+          </LinearGradient>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => setShowModal(true)}
-          style={[styles.actionContainer, {backgroundColor: 'orange'}]}>
-          <View style={styles.actionImageContainer}>
-            <Image
-              style={styles.actionImage}
-              source={require('../assets/images/piggy.png')}
-            />
-          </View>
-          <Text style={styles.actionText}>Deposit</Text>
+          style={styles.actionContainer}>
+          <LinearGradient style={styles.miBG} colors={['white', 'orange']}>
+            <View style={styles.actionImageContainer}>
+              <Image
+                style={styles.actionImage}
+                source={require('../assets/images/piggy.png')}
+              />
+            </View>
+            <Text style={styles.actionText}>Deposit</Text>
+          </LinearGradient>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => setWithdrawModal(true)}
-          style={[styles.actionContainer, {backgroundColor: colors.purple}]}>
-          <View style={styles.actionImageContainer}>
-            <Image
-              style={styles.actionImage}
-              source={require('../assets/images/withdraw.png')}
-            />
-          </View>
-          <Text style={styles.actionText}>Withdraw</Text>
+          style={styles.actionContainer}>
+          <LinearGradient style={styles.miBG} colors={['white', colors.purple]}>
+            <View style={styles.actionImageContainer}>
+              <Image
+                style={styles.actionImage}
+                source={require('../assets/images/withdraw.png')}
+              />
+            </View>
+            <Text style={styles.actionText}>Withdraw</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
 
-      <Button title="Logout" onPress={logout} />
+      {/* <Button title="Logout" onPress={logout} /> */}
 
       <Modal visible={showModal} onRequestClose={() => setShowModal(false)}>
         <View style={styles.centeredView}>

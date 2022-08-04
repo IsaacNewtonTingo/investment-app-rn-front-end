@@ -19,7 +19,7 @@ export default function TabNavigator() {
         tabBarActiveTintColor: '#ff6600',
         tabBarInactiveTintColor: 'white',
         headerStyle: {
-          backgroundColor: colors.tabs,
+          backgroundColor: 'white',
         },
         headerTitleAlign: 'center',
         headerTintColor: 'white',
