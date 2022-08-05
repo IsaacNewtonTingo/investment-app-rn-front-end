@@ -84,16 +84,24 @@ const styles = StyleSheet.create({
     width: 50,
   },
   balanceContainer: {
-    height: 100,
+    height: 150,
     borderRadius: 20,
-    justifyContent: 'center',
     flex: 1,
+    shadowColor: 'black',
+    shadowOffset: {
+      height: 5,
+      width: 5,
+    },
+    shadowOpacity: 0.9,
+    shadowRadius: 50,
+    elevation: 5,
   },
   actionContainer: {
     height: 150,
     width: '30%',
     backgroundColor: colors.lightPurple,
     borderRadius: 10,
+    shadowColor: 'black',
     shadowOffset: {
       height: 5,
       width: 5,

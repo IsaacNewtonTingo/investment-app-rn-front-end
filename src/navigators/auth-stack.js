@@ -14,6 +14,7 @@ import EmailVerificationScreen from '../screens/email-verification';
 import TabNavigator from './tab-navigator';
 
 import styles from '../components/globalStyles';
+import HomeStack from './home-stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,8 +41,8 @@ export default function AuthStack() {
           }}>
           {storedCredentials ? (
             <Stack.Screen
-              name="TabNavigator"
-              component={TabNavigator}
+              name="HomeStack"
+              component={HomeStack}
               options={{
                 headerTitle: 'Registration fee',
                 headerShown: false,

@@ -204,7 +204,7 @@ export default function Home({route, navigation}) {
       </View> */}
       <LinearGradient colors={['blue', 'red']} style={styles.balanceContainer}>
         <ImageBackground
-          style={{padding: 20}}
+          style={{padding: 20, flex: 1, justifyContent: 'center'}}
           source={require('../assets/images/bg.png')}>
           <Text
             style={{
@@ -267,6 +267,8 @@ export default function Home({route, navigation}) {
           </LinearGradient>
         </TouchableOpacity>
       </View>
+
+      {/* <Text style={styles.subHeading}>Recent activity</Text> */}
 
       {/* <Button title="Logout" onPress={logout} /> */}
 
