@@ -189,6 +189,8 @@ export default function Home({route, navigation}) {
       });
   };
 
+  //nothing
+
   return (
     <ScrollView
       refreshControl={
